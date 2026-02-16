@@ -62,6 +62,10 @@ function publishIcon(published: boolean): string[] {
   @include table-label;
 }
 
+.contact-card__row:first-child .contact-card__label {
+  padding-left: calc(#{$font-size-small} + 8px);
+}
+
 .contact-card__link {
   color: $link-color;
 }
