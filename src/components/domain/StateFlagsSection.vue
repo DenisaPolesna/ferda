@@ -44,8 +44,8 @@ const props = defineProps<{
   verbose: boolean
 }>()
 
-/** Column layout from reference: col1=prohibitions, col2=zone, col3=status/expiration */
-const VERBOSE_COLUMNS: string[][] = [
+/** Fallback when API has no groups */
+const FALLBACK_COLUMNS: string[][] = [
   [
     'serverBlocked',
     'serverDeleteProhibited',
@@ -82,13 +82,18 @@ const flagColumns = computed<StateFlag[][]>(() => {
   }
 
   const flagsByName = new Map(flags.map((f) => [f.name, f]))
-  const columns: StateFlag[][] = [[], [], []]
+  const columnOrders =
+    props.stateFlags.groups.length > 0
+      ? props.stateFlags.groups
+      : FALLBACK_COLUMNS
+
+  const columns: StateFlag[][] = columnOrders.map(() => [])
   const assigned = new Set<string>()
 
-  for (let i = 0; i < VERBOSE_COLUMNS.length; i++) {
+  for (let i = 0; i < columnOrders.length; i++) {
     const col = columns[i]
     if (!col) continue
-    for (const name of VERBOSE_COLUMNS[i] ?? []) {
+    for (const name of columnOrders[i] ?? []) {
       const flag = flagsByName.get(name)
       if (flag) {
         col.push(flag)
@@ -99,7 +104,13 @@ const flagColumns = computed<StateFlag[][]>(() => {
 
   const remaining = flags.filter((f) => !assigned.has(f.name))
   remaining.sort((a, b) => a.description.localeCompare(b.description))
-  columns[2]?.push(...remaining)
+  if (remaining.length > 0) {
+    columns.push(remaining)
+  }
+
+  for (const col of columns) {
+    col.sort((a, b) => a.description.localeCompare(b.description))
+  }
 
   const filtered = columns.filter((col) => col.length > 0)
   return filtered.length > 0 ? filtered : [flags]
