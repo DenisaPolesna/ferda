@@ -1,0 +1,76 @@
+// Colors
+$primary-color: #1e90ff;
+$primary-color-hover: #1565c0;
+$background-color: #fafafa;
+$color-white: #ffffff;
+$link-color: #2a69e9;
+$error-color: #ff5252;
+$success-color: #2e7d32;
+$selected-color: #ffc107;
+$text-color: #333;
+
+$gray-color: #ccc;
+$dark-gray-color: #888;
+$light-gray-color: #e0e0e0;
+$light-gray-color-2: #f5f5f5;
+
+// Border radius
+$border-radius-small: 4px;
+$border-radius-medium: 12px;
+$border-radius-full: 50%;
+
+// Font sizes
+$font-size-xsmall: 0.785rem;
+$font-size-small: 0.875rem;
+$font-size-base: 1rem;
+$font-size-medium: 1.125rem;
+$font-size-large: 1.5rem;
+
+// Font family
+$font-family: 'Roboto', Arial, sans-serif;
+
+// Font weights
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// Spacing
+$spacing-xsmall: 4px;
+$spacing-small: 8px;
+$spacing-medium: 16px;
+
+// Layout
+$header-height: 56px;
+$sidebar-width: 200px;
+$side-panel-width: 300px;
+
+// Dropdown / overlay
+$dropdown-min-width: 220px;
+$dropdown-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+$dropdown-offset: 4px;
+
+// Z-index
+$z-index-header: 100;
+$z-index-dropdown: 200;
+
+// Labels
+$label-min-width: 100px;
+$table-label-width: 120px;
+
+// Transitions
+$transition-medium: 0.3s;
+
+// Breakpoints
+$breakpoint-mobile: 640px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1024px;
+$breakpoint-wide: 1280px;
+
+// Padding
+$padding-xsmall: 12px;
+$padding-small: 16px;
+$padding-medium: 24px;
+$padding-large: 32px;
+$padding-section: 40px;
+
+// Letter spacing
+$letter-spacing-small: 0.05em;

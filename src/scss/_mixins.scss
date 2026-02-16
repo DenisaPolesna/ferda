@@ -1,0 +1,63 @@
+@use '@/scss/variables' as *;
+
+@mixin table-label {
+  color: $text-color;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-small;
+  width: $table-label-width;
+  white-space: nowrap;
+}
+
+@mixin card-padding {
+  padding: $padding-xsmall $padding-small;
+}
+
+@mixin table-spacing($prefix, $spacing: 8px) {
+  font-size: $font-size-small;
+  width: 100%;
+  border-collapse: collapse;
+
+  .#{$prefix}__row:first-child .#{$prefix}__cell {
+    padding-top: 0;
+  }
+  .#{$prefix}__row:last-child .#{$prefix}__cell {
+    padding-bottom: 0;
+  }
+  .#{$prefix}__cell {
+    padding-top: $spacing;
+    padding-bottom: $spacing;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+}
+
+@mixin flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin mobile {
+  @media (min-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin wide {
+  @media (min-width: $breakpoint-wide) {
+    @content;
+  }
+}
