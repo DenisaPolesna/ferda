@@ -49,11 +49,11 @@ describe('StateFlagsSection', () => {
     })
     const columns = wrapper.findAll('.state-flags-section__column')
     expect(columns).toHaveLength(3)
-    expect(columns[0].find('.state-flags-section__flag span')?.text()).toBe(
+    expect(columns[0]!.find('.state-flags-section__flag span')?.text()).toBe(
       'Administratively blocked',
     )
-    expect(columns[1].find('.state-flags-section__flag span')?.text()).toBe('In zone')
-    expect(columns[2].find('.state-flags-section__flag span')?.text()).toBe(
+    expect(columns[1]!.find('.state-flags-section__flag span')?.text()).toBe('In zone')
+    expect(columns[2]!.find('.state-flags-section__flag span')?.text()).toBe(
       'Domain expired',
     )
   })
