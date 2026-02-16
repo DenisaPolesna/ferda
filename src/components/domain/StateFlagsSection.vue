@@ -1,6 +1,9 @@
 <template>
   <BaseCard :title="$t('labels.stateFlags')">
-    <div class="state-flags-section__grid">
+    <div
+      class="state-flags-section__grid"
+      :class="{ 'state-flags-section__grid--verbose': verbose }"
+    >
       <div
         v-for="column in flagColumns"
         :key="column.map((f) => f.name).join('-') || flagColumns.indexOf(column)"
@@ -41,19 +44,65 @@ const props = defineProps<{
   verbose: boolean
 }>()
 
-const COLUMN_COUNT = 3
+/** Column layout from reference: col1=prohibitions, col2=zone, col3=status/expiration */
+const VERBOSE_COLUMNS: string[][] = [
+  [
+    'serverBlocked',
+    'serverDeleteProhibited',
+    'serverRegistrantChangeProhibited',
+    'serverRenewProhibited',
+    'serverTransferProhibited',
+    'deleteCandidate',
+    'serverUpdateProhibited',
+  ],
+  ['serverInzoneManual', 'serverOutzoneManual'],
+  [
+    'expired',
+    'notValidated',
+    'nssetMissing',
+    'expirationWarning',
+    'unguarded',
+    'outzoneUnguarded',
+    'outzoneUnguardedWarning',
+    'outzone',
+    'validationWarning2',
+    'validationWarning1',
+    'deleteWarning',
+  ],
+]
 
 const flagColumns = computed<StateFlag[][]>(() => {
   const flags = props.verbose
-    ? props.stateFlags.flags
+    ? [...props.stateFlags.flags]
     : props.stateFlags.flags.filter((f) => f.active)
 
-  const size = Math.ceil(flags.length / COLUMN_COUNT)
-  const columns: StateFlag[][] = []
-  for (let i = 0; i < COLUMN_COUNT; i++) {
-    columns.push(flags.slice(i * size, (i + 1) * size))
+  if (!props.verbose) {
+    flags.sort((a, b) => a.description.localeCompare(b.description))
+    return [flags]
   }
-  return columns
+
+  const flagsByName = new Map(flags.map((f) => [f.name, f]))
+  const columns: StateFlag[][] = [[], [], []]
+  const assigned = new Set<string>()
+
+  for (let i = 0; i < VERBOSE_COLUMNS.length; i++) {
+    const col = columns[i]
+    if (!col) continue
+    for (const name of VERBOSE_COLUMNS[i] ?? []) {
+      const flag = flagsByName.get(name)
+      if (flag) {
+        col.push(flag)
+        assigned.add(name)
+      }
+    }
+  }
+
+  const remaining = flags.filter((f) => !assigned.has(f.name))
+  remaining.sort((a, b) => a.description.localeCompare(b.description))
+  columns[2]?.push(...remaining)
+
+  const filtered = columns.filter((col) => col.length > 0)
+  return filtered.length > 0 ? filtered : [flags]
 })
 </script>
 
@@ -66,12 +115,15 @@ const flagColumns = computed<StateFlag[][]>(() => {
   gap: $spacing-medium;
   font-size: $font-size-small;
   grid-template-columns: 1fr;
+  row-gap: 40px;
 
-  @include mobile {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @include tablet {
-    grid-template-columns: repeat(3, 1fr);
+  &--verbose {
+    @include mobile {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include tablet {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 }
 
